@@ -11,6 +11,8 @@ import java.util.*;
 public class SimpleChatServer {
 
     ArrayList clientOutputStreams;
+    Date time;
+    
 
     public class ClientHandler implements Runnable {
 
@@ -31,7 +33,6 @@ public class SimpleChatServer {
             String message;
             try {
                 while ((message = reader.readLine()) != null) {
-                    System.out.println("read " + message);
                     tellEveryone(message);
                 }
             } catch (Exception ex) {
@@ -41,15 +42,12 @@ public class SimpleChatServer {
     }
 
     public static void main(String[] args) {
-
         new SimpleChatServer().go();
-
     }
 
     public void go() {
         clientOutputStreams = new ArrayList();
         try {
-            System.out.println("socket created");
             ServerSocket serverSock = new ServerSocket(5000);
 
             while (true) {
@@ -58,7 +56,7 @@ public class SimpleChatServer {
                 clientOutputStreams.add(writer);
                 Thread t = new Thread(new ClientHandler(clientSocket));
                 t.start();
-                System.out.println("got a connection");
+                System.out.println("Got a connection");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -67,9 +65,11 @@ public class SimpleChatServer {
 
     public void tellEveryone(String message) {
         Iterator it = clientOutputStreams.iterator();
+        time = new Date();
         while (it.hasNext()) {
             try {
                 PrintWriter writer = (PrintWriter) it.next();
+                writer.print(time.getHours() + ":" + time.getMinutes() + " ");
                 writer.println(message);
                 writer.flush();
             } catch (Exception ex) {
