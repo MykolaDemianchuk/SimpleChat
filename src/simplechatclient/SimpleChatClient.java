@@ -12,11 +12,11 @@ import java.awt.event.*;
  */
 public class SimpleChatClient {
     
-    public JTextArea incoming;
-    public JTextField outgoing;
-    public BufferedReader reader;
-    public PrintWriter writer;
-    public Socket sock;
+    JTextArea incoming;
+    JTextField outgoing;
+    BufferedReader reader;
+    PrintWriter writer;
+    Socket sock;
 
     public static void main(String[] args) {
         SimpleChatClient client = new SimpleChatClient();
@@ -26,7 +26,7 @@ public class SimpleChatClient {
     public void go(){
         JFrame frame = new JFrame("Simple Chat Client");
         JPanel mainPanel = new JPanel();
-        incoming = new JTextArea(15,30);
+        incoming = new JTextArea(25,30);
         incoming.setLineWrap(true);
         incoming.setWrapStyleWord(true);
         incoming.setEditable(false);
@@ -40,7 +40,7 @@ public class SimpleChatClient {
         mainPanel.add(outgoing);
         mainPanel.add(sendButton);
         setUpNetworking();
-        
+
         Thread readerThread = new Thread(new IncomingReader());
         readerThread.start();
         
@@ -84,7 +84,6 @@ public class IncomingReader implements Runnable {
         String message;
         try{
             while((message = reader.readLine()) != null){
-                System.out.println("read " + message);
                 incoming.append(message + "\n");
             }
         }
