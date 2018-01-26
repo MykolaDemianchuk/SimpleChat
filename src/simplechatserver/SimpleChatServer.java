@@ -48,7 +48,6 @@ public class SimpleChatServer {
 
     public void go() {
         clientOutputStreams = new ArrayList();
-
         try {
             System.out.println("socket created");
             ServerSocket serverSock = new ServerSocket(5000);
